@@ -1,11 +1,11 @@
-import React, { useContext } from 'react'
-import { View, Button } from 'react-native'
-import AuthContext from '../../contexts/auth'
+import React from 'react'
+import { View, Button, Text } from 'react-native'
+import {useAuth} from '../../contexts/auth'
 
 import styles from './styles'
 
 const Dashboard: React.FC = () => {
-    const { signOut } = useContext(AuthContext)
+    const { signOut, user } = useAuth()
 
     function handleSignOut() {
         signOut()
@@ -13,6 +13,7 @@ const Dashboard: React.FC = () => {
 
     return (
         <View style={styles.container}>
+            <Text>{user?.name}</Text>
             <Button title="Sign out" onPress={handleSignOut}></Button>
         </View>
     )

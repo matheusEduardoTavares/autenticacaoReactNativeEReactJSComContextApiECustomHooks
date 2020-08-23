@@ -11,15 +11,20 @@ for alterado, ele é renderizado novamente, atualiza
 todos os componentes que o estão utilizando novamente
 */
 
-import React, { createContext, useState, useEffect } from 'react'
+import React, { createContext, useState, useEffect, useContext } from 'react'
 // import { View, ActivityIndicator } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import api from '../services/api'
 import * as auth from '../services/auth'
 
+interface User {
+    name: string;
+    email: string;
+}
+
 interface AuthContextData {
     signed: boolean;
-    user: object | null;
+    user: User | null;
     loading: boolean;
     signIn(): Promise<void>;
     signOut(): void;
@@ -32,7 +37,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     // Nós não iremos salvar o signed no estado, e
     //sim o usuário pois é isso que realmente nos 
     //importa:
-    const [user, setUser] = useState<object | null>(null)
+    const [user, setUser] = useState<User | null>(null)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -83,4 +88,9 @@ export const AuthProvider: React.FC = ({ children }) => {
     )
 }
 
-export default AuthContext
+//Custom Hooks:
+export function useAuth() {
+    const context = useContext(AuthContext)
+
+    return context
+}
